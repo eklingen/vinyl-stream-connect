@@ -23,6 +23,36 @@ const DEFAULT_OPTIONS = {
   }
 }
 
+const OPTIONAL_PACKAGES_ERROR = 'You need the `chokidar`, `connect-livereload` and `tiny-lr` packages installed to use live reload functionality.'
+
+function watchDebounce (paths = [], callback = () => {}) {
+  try {
+    chokidar = require('chokidar')
+  } catch(e) {
+    throw Error(OPTIONAL_PACKAGES_ERROR)
+  }
+
+  const debounceEvent = (callback, time = 250, interval) => (...args) => {
+    clearTimeout(interval)
+    interval = setTimeout(() => callback(...args), time)
+  }
+
+  const watcher = chokidar.watch(paths, { ignoreInitial: true, followSymlinks: false, disableGlobbing: true })
+
+  function onChange(filepath, error) {
+    if (error && watcher.listenerCount('error')) {
+      watcher.emit('error', error)
+      return
+    }
+
+    debounceEvent(callback(filepath), 250)
+  }
+
+  watcher.on('change', (filepath, error) => onChange(filepath, error))
+
+  return watcher
+}
+
 function connectWrapper (options = {}) {
   const connect = require('connect')()
   const serveStatic = require('serve-static')
@@ -51,19 +81,20 @@ function connectWrapper (options = {}) {
 
     if (options.liveReload) {
       try {
-        chokidar = require('chokidar')
         tinylr = require('tiny-lr')
       } catch(e) {
-        throw Error('You need the `chokidar`, `connect-livereload` and `tiny-lr` packages installed to use live reload functionality.')
+        throw Error(OPTIONAL_PACKAGES_ERROR)
       }
 
-      tinylr.Server.prototype.error = error => onServerError(error)
+      tinylr.Server.prototype.error = () => {} // Swallow EPIPE errors
 
       reloadServer = tinylr()
       reloadServer.listen(options.middleware.connectLivereload.port)
 
-      watcher = chokidar.watch(paths, { ignored: [], ignoreInitial: true, followSymlinks: false, disableGlobbing: true })
-      watcher.on('change', filepath => reloadServer.changed({ body: { files: filepath }}))
+      watcher = watchDebounce(paths, filepath => {
+        console.log('sending to livereload', filepath)
+        reloadServer.changed({ body: { files: filepath }});
+      })
     }
 
     if (options.log.start) {
@@ -144,7 +175,7 @@ function connectWrapper (options = {}) {
       try {
         livereload = require('connect-livereload')
       } catch(e) {
-        throw Error('You need the `chokidar`, `connect-livereload` and `tiny-lr` packages installed to use live reload functionality.')
+        throw Error(OPTIONAL_PACKAGES_ERROR)
       }
 
       middleware.unshift(livereload(options.middleware.connectLivereload))

@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS = {
   port: 8000,
   index: 'index.html',
   liveReload: false,
-  log: { connection: false, request: false, error: true, start: true, stop: true },
+  log: { connection: false, request: false, error: true, start: true, stop: true, livereload: false },
   middleware: {
     // any options you set will be passed straight through, except `servestatic.index` since `options.index` will be used instead.
     serveStatic: { dotfiles: 'ignore' },
@@ -92,7 +92,10 @@ function connectWrapper (options = {}) {
       reloadServer.listen(options.middleware.connectLivereload.port)
 
       watcher = watchDebounce(paths, filepath => {
-        console.log('sending to livereload', filepath)
+        if (options.log.livereload) {
+          console.log('Sending', filepath, 'to livereload')
+        }
+
         reloadServer.changed({ body: { files: filepath }});
       })
     }

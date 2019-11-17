@@ -71,7 +71,7 @@ connectWrapper({
 
 ### `log`
 
-You can precisely control the console output on the `connection`, `request`, `error`, `start` and `stop` events. The defaults are in the example below.
+You can precisely control the console output on the specific events. The defaults are in the example below.
 
 ```
 connectWrapper({
@@ -80,7 +80,8 @@ connectWrapper({
     request: false,
     error: true,
     start: true,
-    stop: true
+    stop: true,
+    livereload: false
   }
 })
 ```

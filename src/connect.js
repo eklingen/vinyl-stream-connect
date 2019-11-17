@@ -147,7 +147,7 @@ function connectWrapper (options = {}) {
         throw Error('You need the `chokidar`, `connect-livereload` and `tiny-lr` packages installed to use live reload functionality.')
       }
 
-      middleware.unshift(liveReload(options.middleware.connectLivereload))
+      middleware.unshift(livereload(options.middleware.connectLivereload))
     }
 
     middleware.forEach(plugin => connect.use(plugin))

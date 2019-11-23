@@ -155,6 +155,9 @@ function connectWrapper (options = {}) {
       server.close()
       server = null
     }
+
+    // We got here via process.exit(), so we return the same way, or the process won't exit.
+    return process.nextTick(() => process.exit(0)) // eslint-disable-line no-process-exit
   }
 
   function transform (file, encoding, callback) {

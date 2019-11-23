@@ -1,6 +1,7 @@
 
 # Changelog
 
+v1.0.7 - Fixed regression bug where the process wouldn't exit cleanly
 v1.0.6 - Added `.yarnclean` to `.npmignore`
 v1.0.5 - Internal refactoring
 v1.0.4 - Fix linter issues

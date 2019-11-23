@@ -4,5 +4,6 @@
 .gitignore
 .node-version
 yarn.lock
+.yarnclean
 tests/
 TODO.md

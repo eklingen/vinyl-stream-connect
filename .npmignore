@@ -3,4 +3,5 @@
 .eslintrc.js
 .gitignore
 .node-version
+yarn.lock
 tests/

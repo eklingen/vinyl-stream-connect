@@ -1,0 +1,44 @@
+
+# dotfolders
+.github/
+.idea/
+
+# dotfiles
+.DS_Store
+.editorconfig
+.eslint*
+.git*
+.npm*
+.babel*
+.prettier*
+.travis*
+.zuul*
+.jshint*
+.coveralls*
+.airtap*
+.nvm*
+.nyc*
+.jscs*
+.istanbul*
+zuul*.yml
+codecov*.yml
+appveyor*.yml
+circle*.yml
+bower*.json
+
+# logfiles
+*.log
+
+# temporary files
+*~
+
+# package specific extras (docs, tests, examples)
+**/coverage/
+**/demo/
+**/doc/
+**/docs/
+**/example/
+**/examples/
+**/samples/
+**/test/
+**/tests/

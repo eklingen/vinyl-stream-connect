@@ -26,9 +26,11 @@ const DEFAULT_OPTIONS = {
 const OPTIONAL_PACKAGES_ERROR = 'You need the `chokidar`, `connect-livereload` and `tiny-lr` packages installed to use live reload functionality.'
 
 function watchDebounce (paths = [], callback = () => {}) {
+  let chokidar
+
   try {
     chokidar = require('chokidar')
-  } catch(e) {
+  } catch (e) {
     throw Error(OPTIONAL_PACKAGES_ERROR)
   }
 
@@ -39,7 +41,7 @@ function watchDebounce (paths = [], callback = () => {}) {
 
   const watcher = chokidar.watch(paths, { ignoreInitial: true, followSymlinks: false, disableGlobbing: true })
 
-  function onChange(filepath, error) {
+  function onChange (filepath, error) {
     if (error && watcher.listenerCount('error')) {
       watcher.emit('error', error)
       return
@@ -57,7 +59,6 @@ function connectWrapper (options = {}) {
   const connect = require('connect')()
   const serveStatic = require('serve-static')
 
-  let chokidar
   let livereload
   let tinylr
 
@@ -66,9 +67,9 @@ function connectWrapper (options = {}) {
   options.middleware.serveStatic = { ...DEFAULT_OPTIONS.middleware.serveStatic, ...options.middleware.serveStatic }
   options.middleware.connectLivereload = { ...DEFAULT_OPTIONS.middleware.connectLivereload, ...options.middleware.connectLivereload }
 
-  let paths = []
-  let middleware = []
-  let sockets = []
+  const paths = []
+  const middleware = []
+  const sockets = []
 
   let server
   let reloadServer
@@ -82,7 +83,7 @@ function connectWrapper (options = {}) {
     if (options.liveReload) {
       try {
         tinylr = require('tiny-lr')
-      } catch(e) {
+      } catch (e) {
         throw Error(OPTIONAL_PACKAGES_ERROR)
       }
 
@@ -96,7 +97,7 @@ function connectWrapper (options = {}) {
           console.log('Sending', filepath, 'to livereload')
         }
 
-        reloadServer.changed({ body: { files: filepath }});
+        reloadServer.changed({ body: { files: filepath } })
       })
     }
 
@@ -112,12 +113,12 @@ function connectWrapper (options = {}) {
 
     if (watcher) {
       watcher.close()
-      delete watcher
+      watcher = null
     }
 
     if (reloadServer) {
       reloadServer.close()
-      delete reloadServer
+      reloadServer = null
 
       if (options.log.stop) {
         console.log(`LiveReload on port ${options.middleware.connectLivereload.port} stopped`)
@@ -152,10 +153,8 @@ function connectWrapper (options = {}) {
 
     if (server) {
       server.close()
-      delete server
+      server = null
     }
-
-    return process.nextTick(() => process.exit(0))
   }
 
   function transform (file, encoding, callback) {
@@ -171,13 +170,12 @@ function connectWrapper (options = {}) {
   }
 
   function flush (callback) {
-
-    paths.forEach(path => middleware.push(serveStatic(path, {...options.middleware.serveStatic, index: options.index })))
+    paths.forEach(path => middleware.push(serveStatic(path, { ...options.middleware.serveStatic, index: options.index })))
 
     if (options.liveReload) {
       try {
         livereload = require('connect-livereload')
-      } catch(e) {
+      } catch (e) {
         throw Error(OPTIONAL_PACKAGES_ERROR)
       }
 

@@ -9,6 +9,7 @@
 .eslint*
 .git*
 .npm*
+.yarn
 .babel*
 .prettier*
 .travis*
@@ -20,11 +21,24 @@
 .nyc*
 .jscs*
 .istanbul*
+.testem*
+.iron*
+.tonic*
 zuul*.yml
 codecov*.yml
 appveyor*.yml
 circle*.yml
 bower*.json
+karma*.js
+gulpfile*
+gruntfile*
+rollup*
+tsconfig*
+Makefile
+component.json
+yarn.lock
+renovate.json
+x-package.json5
 
 # logfiles
 *.log
@@ -32,13 +46,39 @@ bower*.json
 # temporary files
 *~
 
-# package specific extras (docs, tests, examples)
-**/coverage/
+# extras (docs, examples)
 **/demo/
 **/doc/
 **/docs/
-**/example/
+**/man/
+**/example*
 **/examples/
 **/samples/
+**/usage.txt
+
+# tests
+**/coverage/
 **/test/
 **/tests/
+**/spec/
+**/bench/
+**/*_test/
+test.*
+test-*.js
+*.test.js
+
+# sourcemaps
+*.map
+
+# type definitions
+#*.ts
+*.flow
+*.mli
+*.iml
+
+# patchfiles
+*.patch
+
+# package-specific files
+lazystream/secret
+ajv/scripts/

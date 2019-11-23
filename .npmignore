@@ -5,3 +5,4 @@
 .node-version
 yarn.lock
 tests/
+TODO.md

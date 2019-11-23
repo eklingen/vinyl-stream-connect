@@ -1,6 +1,6 @@
 {
   "name": "@eklingen/vinyl-stream-connect",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Small vinyl-stream wrapper -aka Gulp plugin- for connect.",
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
     "node": ">=12.13.0"
   },
   "scripts": {
-    "test": "echo '**TODO: Write tests!**'; eslint src"
+    "test": "echo '** TODO: Write tests! **'; echo 'Linting...'; eslint index.js --fix;"
   },
   "dependencies": {
     "connect": "^3.7.0",

@@ -63,9 +63,6 @@ x-package.json5
 **/spec/
 **/bench/
 **/*_test/
-test.*
-test-*.js
-*.test.js
 
 # sourcemaps
 *.map

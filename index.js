@@ -70,7 +70,7 @@ function connectWrapper (options = {}) {
   let tinylr
 
   options = { ...DEFAULT_OPTIONS, ...options }
-  options.log = LOG.indexOf(options.log) ? LOG[options.log] : { ...DEFAULT_OPTIONS.log, ...options.log }
+  options.log = LOG[options.log] || { ...DEFAULT_OPTIONS.log, ...options.log }
   options.middleware.serveStatic = { ...DEFAULT_OPTIONS.middleware.serveStatic, ...options.middleware.serveStatic }
   options.middleware.connectLivereload = { ...DEFAULT_OPTIONS.middleware.connectLivereload, ...options.middleware.connectLivereload }
 

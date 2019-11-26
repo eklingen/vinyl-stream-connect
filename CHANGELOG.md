@@ -1,7 +1,8 @@
 
 # Changelog
 
-v1.0.8 - Added less verbose log options.
+v1.0.9 - Bugfix
+v1.0.8 - Added less verbose log options
 v1.0.7 - Fixed regression bug where the process wouldn't exit cleanly
 v1.0.6 - Added `.yarnclean` to `.npmignore`
 v1.0.5 - Internal refactoring

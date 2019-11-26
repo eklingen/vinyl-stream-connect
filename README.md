@@ -86,6 +86,24 @@ connectWrapper({
 })
 ```
 
+For brevity, there are a few preset combinations you can use:
+
+```
+const LOG = {
+  default: { connection: false, request: false, error: true, start: true, stop: true, livereload: false },
+  verbose: { connection: true, request: true, error: true, start: true, stop: true, livereload: true },
+  quiet: { connection: false, request: false, error: true, start: false, stop: false, livereload: false }
+}
+```
+
+Set these as a string.
+
+```
+connectWrapper({
+  log: 'quiet'
+})
+```
+
 ### `middleware`
 
 Any option you set in the `middleware` object will be passed through verbatim, except `serveStatic.index` since `options.index` has priority. For more details on the available options, see ["serve-static"](https://www.npmjs.com/package/serve-static) and ["connect-livereload"](https://www.npmjs.com/package/connect-livereload). The defaults that are set within this package are shown in the example below.

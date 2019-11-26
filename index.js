@@ -10,12 +10,18 @@
 const { createServer } = require('http')
 const { Transform } = require('stream')
 
+const LOG = {
+  default: { connection: false, request: false, error: true, start: true, stop: true, livereload: false },
+  verbose: { connection: true, request: true, error: true, start: true, stop: true, livereload: true },
+  quiet: { connection: false, request: false, error: true, start: false, stop: false, livereload: false }
+}
+
 const DEFAULT_OPTIONS = {
   host: '127.0.0.1',
   port: 8000,
   index: 'index.html',
   liveReload: false,
-  log: { connection: false, request: false, error: true, start: true, stop: true, livereload: false },
+  log: LOG.default,
   middleware: {
     // any options you set will be passed straight through, except `servestatic.index` since `options.index` will be used instead.
     serveStatic: { dotfiles: 'ignore' },
@@ -39,7 +45,8 @@ function watchDebounce (paths = [], callback = () => {}) {
     interval = setTimeout(() => callback(...args), time)
   }
 
-  const watcher = chokidar.watch(paths, { ignoreInitial: true, followSymlinks: false, disableGlobbing: true })
+  const chokidarOptions = { ignoreInitial: true, followSymlinks: false, disableGlobbing: true }
+  const watcher = chokidar.watch(paths, chokidarOptions)
 
   function onChange (filepath, error) {
     if (error && watcher.listenerCount('error')) {
@@ -63,7 +70,7 @@ function connectWrapper (options = {}) {
   let tinylr
 
   options = { ...DEFAULT_OPTIONS, ...options }
-  options.log = { ...DEFAULT_OPTIONS.log, ...options.log }
+  options.log = LOG.indexOf(options.log) ? LOG[options.log] : { ...DEFAULT_OPTIONS.log, ...options.log }
   options.middleware.serveStatic = { ...DEFAULT_OPTIONS.middleware.serveStatic, ...options.middleware.serveStatic }
   options.middleware.connectLivereload = { ...DEFAULT_OPTIONS.middleware.connectLivereload, ...options.middleware.connectLivereload }
 

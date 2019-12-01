@@ -1,6 +1,7 @@
 
 # Changelog
 
+v1.1.0 - Updated documentation
 v1.0.9 - Bugfix
 v1.0.8 - Added less verbose log options
 v1.0.7 - Fixed regression bug where the process wouldn't exit cleanly

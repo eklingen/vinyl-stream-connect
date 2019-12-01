@@ -18,7 +18,7 @@ Run Connect from within your streams. Use via `src('folder/', { read: false })`.
 
 ## Usage
 
-```
+```javascript
 const connectWrapper = require('@eklingen/vinyl-stream-connect')
 stream.pipe(connectWrapper())
 ```
@@ -31,7 +31,7 @@ There are a few options:
 
 The hostname. Default is `'127.0.0.1'`. Try using `'0.0.0.0'` if you can't reach it from other devices within the network.
 
-```
+```javascript
 connectWrapper({
   host: '127.0.0.1'
 })
@@ -41,7 +41,7 @@ connectWrapper({
 
 The port number. Default is `8000`.
 
-```
+```javascript
 connectWrapper({
   port: 8000
 })
@@ -51,7 +51,7 @@ connectWrapper({
 
 The index file. Default is `index.html`. This option gets passed through to `serve-static`. For more options, see below.
 
-```
+```javascript
 connectWrapper({
   index: 'index.html'
 })
@@ -61,7 +61,7 @@ connectWrapper({
 
 Turn live reload functionality on or off. Default is `false`.
 
-```
+```javascript
 connectWrapper({
   liveReload: false
 })
@@ -73,7 +73,7 @@ connectWrapper({
 
 You can precisely control the console output on the specific events. The defaults are in the example below.
 
-```
+```javascript
 connectWrapper({
   log: {
     connection: false,
@@ -88,7 +88,7 @@ connectWrapper({
 
 For brevity, there are a few preset combinations you can use:
 
-```
+```javascript
 const LOG = {
   default: { connection: false, request: false, error: true, start: true, stop: true, livereload: false },
   verbose: { connection: true, request: true, error: true, start: true, stop: true, livereload: true },
@@ -98,7 +98,7 @@ const LOG = {
 
 Set these as a string.
 
-```
+```javascript
 connectWrapper({
   log: 'quiet'
 })
@@ -108,7 +108,7 @@ connectWrapper({
 
 Any option you set in the `middleware` object will be passed through verbatim, except `serveStatic.index` since `options.index` has priority. For more details on the available options, see ["serve-static"](https://www.npmjs.com/package/serve-static) and ["connect-livereload"](https://www.npmjs.com/package/connect-livereload). The defaults that are set within this package are shown in the example below.
 
-```
+```javascript
 connectWrapper({
   middleware: {
     serveStatic: {

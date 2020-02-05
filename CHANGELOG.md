@@ -1,6 +1,8 @@
 
 # Changelog
 
+v1.1.2 - Upgrade dependencies
+v1.1.1 - Upgrade dependencies
 v1.1.0 - First release with a tag
 v1.0.9 - Bugfix
 v1.0.8 - Added less verbose log options

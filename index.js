@@ -29,7 +29,7 @@ const DEFAULT_OPTIONS = {
   }
 }
 
-const OPTIONAL_PACKAGES_ERROR = 'You need the `chokidar`, `connect-livereload` and `tiny-lr` packages installed to use live reload functionality.'
+const OPTIONAL_PACKAGES_ERROR = 'You need the `chokidar`, `connect-livereload` and `tiny-lr` packages installed to use live reload functionality. You need the `compression` package to use GZIP functionality.'
 
 function watchDebounce (paths = [], callback = () => {}) {
   let chokidar
@@ -68,6 +68,7 @@ function connectWrapper (options = {}) {
 
   let livereload
   let tinylr
+  let compression
 
   options = { ...DEFAULT_OPTIONS, ...options }
   options.log = LOG[options.log] || { ...DEFAULT_OPTIONS.log, ...options.log }
@@ -190,6 +191,15 @@ function connectWrapper (options = {}) {
       }
 
       middleware.unshift(livereload(options.middleware.connectLivereload))
+    }
+
+    if (options.compression) {
+      try {
+        compression = require('compression')
+        middleware.push(compression())
+      } catch (e) {
+        throw Error(OPTIONAL_PACKAGES_ERROR)
+      }
     }
 
     middleware.forEach(plugin => connect.use(plugin))

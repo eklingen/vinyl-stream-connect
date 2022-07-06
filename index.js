@@ -196,7 +196,7 @@ function connectWrapper (options = {}) {
     if (options.compression) {
       try {
         compression = require('compression')
-        middleware.push(compression())
+        connect.use(compression())
       } catch (e) {
         throw Error(OPTIONAL_PACKAGES_ERROR)
       }

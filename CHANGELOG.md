@@ -1,6 +1,7 @@
 
 # Changelog
 
+v3.0.4 - Fixed bug where compression wasn't loaded correctly
 v3.0.3 - Added optional gzip compression
 v3.0.2 - Upgrade dependencies
 v3.0.1 - Upgrade dependencies

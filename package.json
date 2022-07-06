@@ -34,6 +34,7 @@
   },
   "optionalDependencies": {
     "chokidar": "^3.5.3",
+    "compression": "^1.7.4",
     "connect-livereload": "^0.6.1",
     "tiny-lr": "^2.0.0"
   },

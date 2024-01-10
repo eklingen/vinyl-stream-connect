@@ -13,7 +13,7 @@ const { Transform } = require('stream')
 const LOG = {
   default: { connection: false, request: false, error: true, start: true, stop: true, livereload: false },
   verbose: { connection: true, request: true, error: true, start: true, stop: true, livereload: true },
-  quiet: { connection: false, request: false, error: true, start: false, stop: false, livereload: false }
+  quiet: { connection: false, request: false, error: true, start: false, stop: false, livereload: false },
 }
 
 const DEFAULT_OPTIONS = {
@@ -25,13 +25,13 @@ const DEFAULT_OPTIONS = {
   middleware: {
     // any options you set will be passed straight through, except `servestatic.index` since `options.index` will be used instead.
     serveStatic: { dotfiles: 'ignore' },
-    connectLivereload: { port: 35729 }
-  }
+    connectLivereload: { port: 35729 },
+  },
 }
 
 const OPTIONAL_PACKAGES_ERROR = 'You need the `chokidar`, `connect-livereload` and `tiny-lr` packages installed to use live reload functionality. You need the `compression` package to use GZIP functionality.'
 
-function watchDebounce (paths = [], callback = () => {}) {
+function watchDebounce(paths = [], callback = () => {}) {
   let chokidar
 
   try {
@@ -40,15 +40,17 @@ function watchDebounce (paths = [], callback = () => {}) {
     throw Error(OPTIONAL_PACKAGES_ERROR)
   }
 
-  const debounceEvent = (callback, time = 250, interval) => (...args) => {
-    clearTimeout(interval)
-    interval = setTimeout(() => callback(...args), time)
-  }
+  const debounceEvent =
+    (callback, time = 250, interval) =>
+    (...args) => {
+      clearTimeout(interval)
+      interval = setTimeout(() => callback(...args), time)
+    }
 
   const chokidarOptions = { ignoreInitial: true, followSymlinks: false, disableGlobbing: true }
   const watcher = chokidar.watch(paths, chokidarOptions)
 
-  function onChange (filepath, error) {
+  function onChange(filepath, error) {
     if (error && watcher.listenerCount('error')) {
       watcher.emit('error', error)
       return
@@ -62,7 +64,7 @@ function watchDebounce (paths = [], callback = () => {}) {
   return watcher
 }
 
-function connectWrapper (options = {}) {
+function connectWrapper(options = {}) {
   const connect = require('connect')()
   const serveStatic = require('serve-static')
 
@@ -83,7 +85,7 @@ function connectWrapper (options = {}) {
   let reloadServer
   let watcher
 
-  function onServerStart (error, callback) {
+  function onServerStart(error, callback) {
     if (error && options.log.error) {
       console.error('Error starting webserver:', error)
     }
@@ -114,7 +116,7 @@ function connectWrapper (options = {}) {
     }
   }
 
-  function onServerClose () {
+  function onServerClose() {
     if (options.log.stop) {
       console.log('Webserver stopped')
     }
@@ -134,7 +136,7 @@ function connectWrapper (options = {}) {
     }
   }
 
-  function onServerConnection (socket) {
+  function onServerConnection(socket) {
     if (options.log.connection) {
       console.log('Connection from ' + socket.address().address)
     }
@@ -144,19 +146,19 @@ function connectWrapper (options = {}) {
     return socket.on('close', () => sockets.splice(sockets.indexOf(socket), 1))
   }
 
-  function onServerRequest (request, response) {
+  function onServerRequest(request, response) {
     if (options.log.request) {
       console.log(`Request ${request.method} ${request.url}`)
     }
   }
 
-  function onServerError (error) {
+  function onServerError(error) {
     if (options.log.error) {
       console.error(error.toString())
     }
   }
 
-  function onProcessExit () {
+  function onProcessExit() {
     sockets.forEach(socket => socket.destroy())
 
     if (server) {
@@ -168,8 +170,9 @@ function connectWrapper (options = {}) {
     return process.nextTick(() => process.exit(0)) // eslint-disable-line no-process-exit
   }
 
-  function transform (file, encoding, callback) {
-    if (file.contents) { // Not a directory
+  function transform(file, encoding, callback) {
+    if (file.contents) {
+      // Not a directory
       return
     }
 
@@ -180,7 +183,7 @@ function connectWrapper (options = {}) {
     return callback()
   }
 
-  function flush (callback) {
+  function flush(callback) {
     paths.forEach(path => middleware.push(serveStatic(path, { ...options.middleware.serveStatic, index: options.index })))
 
     if (options.liveReload) {

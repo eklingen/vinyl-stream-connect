@@ -27,7 +27,7 @@
   },
   "packageManager": "yarn@4.0.2",
   "scripts": {
-    "test": "echo '** TODO: Write tests! **'; echo 'Linting...'; eslint index.js --fix;"
+    "test": "echo '** TODO: Write tests! **';"
   },
   "dependencies": {
     "connect": "^3.7.0",

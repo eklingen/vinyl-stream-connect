@@ -1,6 +1,10 @@
 
 # Small vinyl-stream wrapper -aka Gulp plugin- for connect.
 
+> This project was originally developed independently and has been used in projects at [Fabrique](https//www.fabrique.nl) and [Q42](https://www.q42.nl).
+> It remains publicly available and can be forked or maintained independently if needed.
+> No guarantees are provided for long-term maintenance.
+
 Run Connect from within your streams. Use via `src('folder/', { read: false })`. Don't use a glob!
 
 - Supports serving multiple static paths as root. Gets the paths from the Vinyl stream. Remember to use `{ read: false }` and *don't use a glob*.
